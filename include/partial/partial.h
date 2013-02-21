@@ -72,7 +72,7 @@ extern "C" {
 
 	CDFile* PartialZipListFiles(ZipInfo* info);
 
-	unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file);
+	unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file, char* sizeToDownload);
 
 	void PartialZipRelease(ZipInfo* info);
 	

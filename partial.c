@@ -231,7 +231,7 @@ CDFile* PartialZipListFiles(ZipInfo* info)
 	return NULL;
 }
 
-unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file)
+unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file, char* sizeToDownload)
 {
 	LocalFile localHeader;
 	LocalFile* pLocalHeader = &localHeader;
@@ -268,7 +268,12 @@ unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file)
 	void* pFileData[] = {fileData, info, file, &progress}; 
 
 	start = file->offset + sizeof(LocalFile) + localHeader.lenFileName + localHeader.lenExtra;
-	end = start + file->compressedSize - 1;
+	if(sizeToDownload != NULL) {
+		file->size = atoi(sizeToDownload);
+		end = start + file->size - 1;
+	} else {
+		end = start + file->compressedSize - 1;
+	}
 	sprintf(sRange, "%" PRIu64 "-%" PRIu64, start, end);
 
 	curl_easy_setopt(info->hIPSW, CURLOPT_WRITEFUNCTION, receiveData);
