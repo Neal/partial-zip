@@ -5,8 +5,6 @@
 void callback(ZipInfo* info, CDFile* file, size_t progress) {
 	int percentDone = progress * 100/file->compressedSize;
 	printf("\rDownloading: %d%%", percentDone);
-	if(percentDone == 100)
-		printf("\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -41,15 +39,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	unsigned char* data = PartialZipGetFile(info, file, sizeToDownload);
-	int dataLen = 0;
-	if (sizeToDownload == NULL) {
-		dataLen = file->size;
-	} else {
-		dataLen = atoi(sizeToDownload);
-		printf("\n");
-	}
+	int dataLen = file->size;
 
 	PartialZipRelease(info);
+
+	printf("\n");
 
 	data = realloc(data, dataLen + 1);
 	data[dataLen] = '\0';

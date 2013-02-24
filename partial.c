@@ -263,17 +263,17 @@ unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file, char* sizeToDownlo
 	FLIPENDIANLE(localHeader.lenFileName);
 	FLIPENDIANLE(localHeader.lenExtra);
 
+	if(sizeToDownload != NULL) {
+		file->compressedSize = atoi(sizeToDownload);
+		file->size = atoi(sizeToDownload);
+	}
+
 	unsigned char* fileData = (unsigned char*) malloc(file->compressedSize);
 	size_t progress = 0;
 	void* pFileData[] = {fileData, info, file, &progress}; 
 
 	start = file->offset + sizeof(LocalFile) + localHeader.lenFileName + localHeader.lenExtra;
-	if(sizeToDownload != NULL) {
-		file->size = atoi(sizeToDownload);
-		end = start + file->size - 1;
-	} else {
-		end = start + file->compressedSize - 1;
-	}
+	end = start + file->compressedSize - 1;
 	sprintf(sRange, "%" PRIu64 "-%" PRIu64, start, end);
 
 	curl_easy_setopt(info->hIPSW, CURLOPT_WRITEFUNCTION, receiveData);
