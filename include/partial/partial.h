@@ -75,10 +75,9 @@ extern "C" {
 	unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file, char* sizeToDownload);
 
 	void PartialZipRelease(ZipInfo* info);
-	
+
 	void PartialZipSetProgressCallback(ZipInfo* info, PartialZipProgressCallback progressCallback);
 
 #ifdef __cplusplus
 }
 #endif
-
