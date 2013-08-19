@@ -29,5 +29,8 @@ IF(BUILD_PARTIAL)
 
 	add_executable(partialzip partialzip.c)
 	target_link_libraries(partialzip partial)
+
+	add_executable(partialzip-web partialzip-web.c)
+	target_link_libraries(partialzip-web partial)
 ENDIF(BUILD_PARTIAL)
 
