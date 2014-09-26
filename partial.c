@@ -9,6 +9,8 @@
 #include "common.h"
 #include "partial/partial.h"
 
+#define TIMEOUT 30
+
 static size_t dummyReceive(void* data, size_t size, size_t nmemb, void* info) {
 	return size * nmemb;
 }
@@ -88,6 +90,8 @@ ZipInfo* PartialZipInit(const char* url)
 	curl_easy_setopt(info->hCurl, CURLOPT_FOLLOWLOCATION, 1);
 	curl_easy_setopt(info->hCurl, CURLOPT_NOBODY, 1);
 	curl_easy_setopt(info->hCurl, CURLOPT_WRITEFUNCTION, dummyReceive);
+	curl_easy_setopt(info->hCurl, CURLOPT_TIMEOUT, TIMEOUT);
+	curl_easy_setopt(info->hCurl, CURLOPT_CONNECTTIMEOUT, TIMEOUT);
 
 	if(strncmp(info->url, "file://", 7) == 0)
 	{
@@ -134,6 +138,8 @@ ZipInfo* PartialZipInit(const char* url)
 	curl_easy_setopt(info->hCurl, CURLOPT_WRITEDATA, info);
 	curl_easy_setopt(info->hCurl, CURLOPT_RANGE, sRange);
 	curl_easy_setopt(info->hCurl, CURLOPT_HTTPGET, 1);
+	curl_easy_setopt(info->hCurl, CURLOPT_TIMEOUT, TIMEOUT);
+	curl_easy_setopt(info->hCurl, CURLOPT_CONNECTTIMEOUT, TIMEOUT);
 
 	curl_easy_perform(info->hCurl);
 
@@ -173,6 +179,8 @@ ZipInfo* PartialZipInit(const char* url)
 		curl_easy_setopt(info->hCurl, CURLOPT_WRITEDATA, info);
 		curl_easy_setopt(info->hCurl, CURLOPT_RANGE, sRange);
 		curl_easy_setopt(info->hCurl, CURLOPT_HTTPGET, 1);
+		curl_easy_setopt(info->hCurl, CURLOPT_TIMEOUT, TIMEOUT);
+		curl_easy_setopt(info->hCurl, CURLOPT_CONNECTTIMEOUT, TIMEOUT);
 		curl_easy_perform(info->hCurl);
 
 		flipFiles(info);
@@ -247,6 +255,8 @@ unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file, char* sizeToDownlo
 	curl_easy_setopt(info->hCurl, CURLOPT_WRITEDATA, &pFileHeader);
 	curl_easy_setopt(info->hCurl, CURLOPT_RANGE, sRange);
 	curl_easy_setopt(info->hCurl, CURLOPT_HTTPGET, 1);
+	curl_easy_setopt(info->hCurl, CURLOPT_TIMEOUT, TIMEOUT);
+	curl_easy_setopt(info->hCurl, CURLOPT_CONNECTTIMEOUT, TIMEOUT);
 	curl_easy_perform(info->hCurl);
 
 	FLIPENDIANLE(localHeader.signature);
@@ -278,6 +288,8 @@ unsigned char* PartialZipGetFile(ZipInfo* info, CDFile* file, char* sizeToDownlo
 	curl_easy_setopt(info->hCurl, CURLOPT_WRITEDATA, pFileData);
 	curl_easy_setopt(info->hCurl, CURLOPT_RANGE, sRange);
 	curl_easy_setopt(info->hCurl, CURLOPT_HTTPGET, 1);
+	curl_easy_setopt(info->hCurl, CURLOPT_TIMEOUT, TIMEOUT);
+	curl_easy_setopt(info->hCurl, CURLOPT_CONNECTTIMEOUT, TIMEOUT);
 	curl_easy_perform(info->hCurl);
 
 	if(file->method == 8)
